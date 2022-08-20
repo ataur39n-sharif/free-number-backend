@@ -4,7 +4,7 @@ const HomePageController = {
     createData: async (req, res) => {
         try {
             const { page_title, meta_description } = req.body
-            await HomePageModel.create({ page_title, meta_description })
+            await HomePageModel.create({ page_title, meta_description, status: 'latest' })
             return res.status(200).json({
                 success: true,
                 message: 'Created Success .'
@@ -19,7 +19,7 @@ const HomePageController = {
     updateData: async (req, res) => {
         try {
             const { page_title, meta_description } = req.body
-            await HomePageModel.findOneAndUpdate({ _id: '62fd393bd9a3ecd913f0c3b9' }, { page_title, meta_description })
+            await HomePageModel.findOneAndUpdate({ status: 'latest' }, { page_title, meta_description })
             return res.status(200).json({
                 success: true,
                 message: 'Update Success .'
@@ -33,7 +33,7 @@ const HomePageController = {
     },
     findData: async (req, res) => {
         try {
-            const data = await HomePageModel.findOne({ _id: "62fd393bd9a3ecd913f0c3b9" })
+            const data = await HomePageModel.findOne({ status: 'latest' })
             return res.status(200).json({
                 success: true,
                 data
