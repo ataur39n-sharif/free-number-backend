@@ -4,7 +4,7 @@ const IndexPageController = {
     createData: async (req, res) => {
         try {
             const { website_title, meta_description, keywords } = req.body
-            await IndexPageModel.create({ website_title, meta_description, keywords })
+            await IndexPageModel.create({ website_title, meta_description, keywords, status: "latest" })
             return res.status(200).json({
                 success: true,
                 message: 'Created Success .'
@@ -18,7 +18,7 @@ const IndexPageController = {
     },
     findData: async (req, res) => {
         try {
-            const data = await IndexPageModel.findOne({ _id: "62fd34d151cdfc8dc4abddd0" })
+            const data = await IndexPageModel.findOne({ status: "latest" })
             return res.status(200).json({
                 success: true,
                 data
@@ -33,7 +33,7 @@ const IndexPageController = {
     updateIndexData: async (req, res) => {
         try {
             const { website_title, meta_description, keywords } = req.body
-            await IndexPageModel.findOneAndUpdate({ _id: '62fd34d151cdfc8dc4abddd0' }, { website_title, meta_description, keywords })
+            await IndexPageModel.findOneAndUpdate({ status: 'latest' }, { website_title, meta_description, keywords })
             return res.status(200).json({
                 success: true,
                 message: 'Update Success .'
