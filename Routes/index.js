@@ -4,6 +4,7 @@ const HomePageController = require('../Controllers/Homepage/Homepage.controller'
 const IndexPageController = require('../Controllers/IndexPage/IndexPage.controller')
 const NumberPageController = require('../Controllers/NumberPage/NumberPage.controller')
 const sms = require('../Controllers/ReceiveSms/ReceiveSms.controller')
+const SocialMediaController = require('../Controllers/SocialMedia/SocialMedia.controller')
 
 router
     .get('/all', sms.read)
@@ -19,5 +20,8 @@ router
     .get('/number-page-data',NumberPageController.findData)
     .post('/create-number-page-data',NumberPageController.createData)
     .put('/update-number-page-data',NumberPageController.updateNumberPageData)
+    .get('/social-media/:media_name',SocialMediaController.findData)
+    .post('/new-social-media',SocialMediaController.createData)
+    .put('/update-social-media',SocialMediaController.updateData)
 
 module.exports = router

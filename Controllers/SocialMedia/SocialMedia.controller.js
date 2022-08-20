@@ -1,10 +1,10 @@
-const NumberPageModel = require("../../Models/NumberPage/NumberPage.model")
+const SocialMediaModel = require("../../Models/SocialMedia/SocialMedia.model")
 
-const NumberPageController = {
+const SocialMediaController = {
     createData: async (req, res) => {
         try {
-            const { page_title, meta_description, blog_title, blog_description, keywords } = req.body
-            await NumberPageModel.create({ page_title, meta_description, keywords, blog_title, blog_description, status: "latest" })
+            const { url, text_title, appId, media_name, hashTag, subject, body } = req.body
+            await SocialMediaModel.create({ url, text_title, appId, media_name, hashTag, subject, body })
             return res.status(200).json({
                 success: true,
                 message: 'Created Success .'
@@ -16,9 +16,27 @@ const NumberPageController = {
             })
         }
     },
+    updateData: async (req, res) => {
+        try {
+            const { url, text_title, appId, media_name, hashTag, subject, body } = req.body
+            const data = await SocialMediaModel.findOneAndUpdate({ media_name }, { hashTag, url, text_title, appId, subject, body, media_name })
+            return res.status(200).json({
+                success: true,
+                message: 'Update Success .',
+                data
+            })
+        } catch (error) {
+            return res.status(500).json({
+                success: false,
+                error: error.message
+            })
+        }
+    },
     findData: async (req, res) => {
         try {
-            const data = await NumberPageModel.findOne({ status: "latest" })
+            const { media_name } = req.params
+
+            const data = await SocialMediaModel.findOne({ media_name })
             return res.status(200).json({
                 success: true,
                 data
@@ -30,20 +48,6 @@ const NumberPageController = {
             })
         }
     },
-    updateNumberPageData: async (req, res) => {
-        try {
-            const { page_title, meta_description, keywords, blog_title, blog_description } = req.body
-            await NumberPageModel.findOneAndUpdate({ status: 'latest' }, { keywords, page_title, meta_description, blog_title, blog_description })
-            return res.status(200).json({
-                success: true,
-                message: 'Update Success .'
-            })
-        } catch (error) {
-            return res.status(500).json({
-                success: false,
-                error: error.message
-            })
-        }
-    }
 }
-module.exports = NumberPageController
+
+module.exports = SocialMediaController
