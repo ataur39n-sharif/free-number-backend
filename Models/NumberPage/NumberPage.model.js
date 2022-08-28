@@ -12,14 +12,6 @@ const dataSchema = new mongoose.Schema({
     keywords: {
         type: String
     },
-    blog_title: {
-        type: String,
-        required: true,
-    },
-    blog_description: {
-        type: String,
-        required: true,
-    },
     status: {
         type: String,
         enum: ['latest', 'others'],

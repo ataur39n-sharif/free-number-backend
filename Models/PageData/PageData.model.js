@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 const dataSchema = new mongoose.Schema({
-    page_title: {
+    title: {
         type: String,
         required: true,
     },
@@ -9,16 +9,24 @@ const dataSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    keyword: {
+        type: String,
+        required: true,
+    },
+    page_name: {
+        type: String,
+        required: true
+    },
     status: {
         type: String,
         enum: ['latest', 'others'],
-        default: 'others'
+        default: 'latest'
     }
 }, {
     timestamps: true,
-    versionKey: false
+    versionKey: false,
 })
 
-const HomePageModel = mongoose.model('homepageData', dataSchema)
+const PageDataModel = mongoose.model('PageData', dataSchema)
 
-module.exports = HomePageModel
+module.exports = PageDataModel
