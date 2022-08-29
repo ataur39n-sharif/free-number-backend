@@ -5,23 +5,24 @@ const dataSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    meta_description: {
+    description: {
         type: String,
         required: true,
     },
-    keyword: {
-        type: String,
-        required: true,
+    others: {
+        type: Object,
+        default: {}
     },
-    page_name: {
+    blog_page_name: {
         type: String,
         required: true
     }
 }, {
     timestamps: true,
-    versionKey: false,
+    versionKey: false
 })
 
-const PageDataModel = mongoose.model('PageData', dataSchema)
 
-module.exports = PageDataModel
+const BlogModel = mongoose.model('blog', dataSchema)
+
+module.exports = BlogModel

@@ -9,10 +9,11 @@ const ContentManage = {
             const indexPage = await IndexPageModel.findOne({ status: "latest" })
             const numberPage = await NumberPageModel.findOne({ status: 'latest' })
             const socialMedia = await SocialMediaModel.find()
+            const allPagesData = await PageDataModel.find()
             return res.status(200).json({
                 success: true,
                 pageData: {
-                    indexPage, numberPage, socialMedia
+                    indexPage, numberPage, socialMedia, allPagesData
                 }
             })
         } catch (error) {
@@ -29,7 +30,7 @@ const ContentManage = {
 
             return res.status(200).json({
                 success: true,
-                pageInfo
+                data: pageInfo
             })
 
         } catch (error) {
@@ -67,14 +68,22 @@ const ContentManage = {
     },
     updatePageInfo: async (req, res) => {
         try {
-            const { title, meta_description, page_name, keyword } = req.body
+            const { page_name } = req.params
+            const { title, meta_description, keyword } = req.body
 
-            //update other all pages status to others
+            const validReq = await PageDataModel.findOne({ page_name })
+            if (!validReq) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'No page found .'
+                })
+            }
+
             await PageDataModel.findOneAndUpdate({ page_name }, { title, meta_description, keyword })
 
             return res.status(200).json({
                 success: true,
-                message: 'Successfully created .'
+                message: 'Successfully updated .'
             })
 
         } catch (error) {

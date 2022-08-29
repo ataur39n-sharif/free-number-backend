@@ -26,7 +26,7 @@ router
     .put('/update-social-media', SocialMediaController.updateData)
     .get('/page/:page_name', ContentManage.findOnePage)
     .post('/new-page-info', ContentManage.newPageInfo)
-    .put('/page', ContentManage.updatePageInfo)
+    .put('/page/:page_name', ContentManage.updatePageInfo)
 
 
 module.exports = router
