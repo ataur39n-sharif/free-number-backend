@@ -1,4 +1,5 @@
 const router = require('express').Router()
+const BlogController = require('../Controllers/Blog/Blog.controller')
 const ContentManage = require('../Controllers/ContentManage/ContentManage.controller')
 // const HomePageController = require('../Controllers/Homepage/Homepage.controller')
 const IndexPageController = require('../Controllers/IndexPage/IndexPage.controller')
@@ -27,6 +28,11 @@ router
     .get('/page/:page_name', ContentManage.findOnePage)
     .post('/new-page-info', ContentManage.newPageInfo)
     .put('/page/:page_name', ContentManage.updatePageInfo)
+    .get('/blog', BlogController.getAllBlog)
+    .get('/blog/:id', BlogController.getSingleBlog)
+    .post('/blog/create', BlogController.addNewBlog)
+    .put('/blog/:id', BlogController.editBlog)
+    .delete('/blog/:id', BlogController.deleteBlog)
 
 
 module.exports = router
