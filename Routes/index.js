@@ -6,6 +6,7 @@ const IndexPageController = require('../Controllers/IndexPage/IndexPage.controll
 const NumberPageController = require('../Controllers/NumberPage/NumberPage.controller')
 const sms = require('../Controllers/ReceiveSms/ReceiveSms.controller')
 const SocialMediaController = require('../Controllers/SocialMedia/SocialMedia.controller')
+const NumberRoute = require('./NumbersRoute')
 
 router
     .get('/all', sms.read)
@@ -33,6 +34,7 @@ router
     .post('/blog/create', BlogController.addNewBlog)
     .put('/blog/:id', BlogController.editBlog)
     .delete('/blog/:id', BlogController.deleteBlog)
+    .use('/number', NumberRoute)
 
 
 module.exports = router

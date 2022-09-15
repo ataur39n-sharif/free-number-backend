@@ -31,9 +31,9 @@ const BlogController = {
     },
     addNewBlog: async (req, res) => {
         try {
-            const { blog_page_name, description, title } = req.body
+            const { blog_page_name, description, title, others } = req.body
 
-            await BlogModel.create({ title, blog_page_name, description })
+            await BlogModel.create({ title, blog_page_name, description, others })
             return res.status(200).json({
                 success: true,
                 message: "New blog created successfully. "
@@ -48,9 +48,9 @@ const BlogController = {
     editBlog: async (req, res) => {
         try {
             const { id } = req.params
-            const { description, title } = req.body
+            const { description, title, others } = req.body
 
-            await BlogModel.findOneAndUpdate({ blog_page_name: id }, { title, description })
+            await BlogModel.findOneAndUpdate({ blog_page_name: id }, { title, description, others })
             return res.status(200).json({
                 success: true,
                 message: "Blog updated successfully. "
