@@ -51,12 +51,13 @@ const OnlineSimUtils = {
 
         let allMessages = []
         for (let i = 0; i < msgList.length; i++) {
-            const { text, in_number, my_number, created_at } = msgList[i];
+            const { text, in_number, my_number, created_at, data_humans } = msgList[i];
             const modifyObj = {
                 receiver: number,
                 sender: in_number,
                 message: text,
-                createdAt: created_at
+                createdAt: created_at,
+                data_humans
             }
             allMessages.push(modifyObj)
         }

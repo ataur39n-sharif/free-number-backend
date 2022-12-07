@@ -50,11 +50,14 @@ const ReceiveSmsController = {
         try {
             const { number } = req.params;
             const numberInfo = await NumberModel.findOne({ phone_number: number })
+            // console.log(numberInfo);
             let msgList = []
             if (numberInfo.provider === 'onlineSim') {
-                msgList = await OnlineSimUtils.getAllMessages(`+${number}`, numberInfo?.country_code)
+                const msg = await OnlineSimUtils.getAllMessages(`+${number}`, numberInfo?.country_code)
+                msgList = msg
             } else {
-                msgList = await ReceiveSmsModel.find({ receiver: number }).sort({ createdAt: -1 })
+                const msg = await ReceiveSmsModel.find({ receiver: number }).sort({ createdAt: -1 })
+                msgList = msg
             }
             return res.status(200).json({
                 success: true,
