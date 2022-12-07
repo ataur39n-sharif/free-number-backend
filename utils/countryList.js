@@ -15,6 +15,10 @@ const countryList = {
         "name": "United Kingdom",
         "slug": "united-kingdom"
     },
+    "gb": {
+        "name": "Britain",
+        "slug": "united-kingdom"
+    },
     "lv": {
         "name": "Latvia",
         "slug": "latvia"
