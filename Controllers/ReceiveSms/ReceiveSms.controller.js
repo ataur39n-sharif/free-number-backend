@@ -6,7 +6,20 @@ const ReceiveSmsController = {
     new_sms: async (req, res) => {
         try {
             const { receiver, sender, message } = req.body
-            await ReceiveSmsModel.create({ receiver, sender, message })
+            const { provider } = req.query
+
+            if (provider === 'telnyx') {
+                const { data: { payload } } = req.body
+                const { from, to, text } = payload
+                console.log(from, to, text);
+                await ReceiveSmsModel.create({
+                    receiver: to[0].phone_number.split('+')[1],
+                    sender: from.phone_number.split('+')[1],
+                    message: text
+                })
+            } else {
+                await ReceiveSmsModel.create({ receiver, sender, message })
+            }
             return res.status(200).json({
                 success: true,
                 message: "a new message arrived. "

@@ -1,47 +1,18 @@
-const axios = require("axios")
+
+const { default: axios } = require("axios")
 const NumberModel = require("../../Models/Number/Number.model")
 const countryList = require("../../utils/countryList")
+const MessageBirdUtils = require("../../utils/MessageBird")
 const OnlineSimUtils = require("../../utils/OnlineSim")
+const TelnyxUtils = require("../../utils/Telnyx")
 
 const NumberController = {
     //add number
     syncNumberList: async (req, res) => {
         try {
-            // const list = await axios.get('https://numbers.messagebird.com/v1/phone-numbers?limit=100', {
-            //     headers: {
-            //         'Authorization': 'AccessKey XM7Qv4P6xzebLjyNueNHahiu0'
-            //     }
-            // })
-            // const allNumber = await NumberModel.find()
-            // const countryInfoList = Object.entries(countryList)
-
-            // const messageBirdNumberList = allNumber.filter((doc) => (doc.provider === "messageBird") && (doc.status === 'active'))
-
-            // //update inactive number list
-            // messageBirdNumberList?.map(async (eachData) => {
-            //     const available = list?.data?.items?.find((singleData) => parseInt(singleData.number) === eachData.phone_number)
-            //     if (!available) {
-            //         await NumberModel.updateOne({ phone_number: eachData.phone_number }, { status: 'inactive' })
-            //     }
-            // })
-
-            // //add new number from messageBird to db
-            // list.data?.items.map(async (eachData) => {
-            //     const listed = allNumber.find((a) => a.phone_number === parseInt(eachData.number))
-            //     if (!listed) {
-            //         const currentCountryInfo = countryInfoList.find((each) => each[0] === eachData.country.toLowerCase())
-            //         await NumberModel.create({
-            //             phone_number: eachData.number,
-            //             country_code: eachData.country.toLowerCase(),
-            //             country_name: currentCountryInfo[1].name,
-            //             status: 'active',
-            //             provider: "messageBird",
-            //             country_slug: currentCountryInfo[1].slug
-            //         })
-            //     }
-            // })
-            const syncOnlineSim = await OnlineSimUtils.syncFreeNumbers()
-            console.log('from controller ', syncOnlineSim);
+            await MessageBirdUtils.syncNumbers()
+            await OnlineSimUtils.syncFreeNumbers()
+            await TelnyxUtils.syncNumbers()
 
             return res.status(200).json({
                 success: true,
@@ -50,7 +21,7 @@ const NumberController = {
         } catch (error) {
             return res.status(500).json({
                 success: false,
-                error: error.message
+                error: error
             })
         }
     },

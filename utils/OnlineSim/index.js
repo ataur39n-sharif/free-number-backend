@@ -34,13 +34,9 @@ const OnlineSimUtils = {
     },
     //get all messages for a number
     getAllMessages: async (number, country_code) => {
-        // const list = await 
         const calling_code = CountryCodes.find(each => each.code.toLowerCase() === country_code?.toLowerCase())
-        // console.log(calling_code);
         const dial_digit = calling_code.dial_code.split('+')[1]
         const number_withOut_dialDigit = number.split(calling_code.dial_code)[1]
-        // console.log(dial_digit, number_withOut_dialDigit);
-
         const { data: { messages } } = await axios.get(`https://onlinesim.io/api/getFreeMessageList?phone=${number_withOut_dialDigit}&country=${dial_digit}&lang=en`)
 
         const { data, last_page } = messages

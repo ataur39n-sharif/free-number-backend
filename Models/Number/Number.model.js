@@ -25,7 +25,7 @@ const dataSchema = new mongoose.Schema({
     },
     provider: {
         type: String,
-        enum: ['messageBird', 'onlineSim'],
+        enum: ['messageBird', 'onlineSim','telnyx'],
         required: true
     }
 }, {
