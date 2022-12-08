@@ -183,6 +183,14 @@ const countryList = {
         "name": "Slovakia",
         "slug": "slovakia"
     },
+    "bg": {
+        "name": "Bulgaria",
+        "slug": "bulgaria"
+    },
+    "ci": {
+        "name": "Ivory Coast",
+        "slug": "ivory-coast"
+    }
 
 }
 

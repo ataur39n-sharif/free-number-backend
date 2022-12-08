@@ -9,13 +9,12 @@ const OnlineSimUtils = {
         const { data: { numbers } } = await axios.get(`https://onlinesim.io/api/getFreePhoneList?lang=en`)
         const all_number = await NumberModel.find()
         const all_countries = Object.entries(countryList)
-
+        // console.log(numbers);
         for (let i = 0; i < numbers.length; i++) {
             const { country_text, full_number } = numbers[i];
             const phoneNumber = full_number.split('+')[1]
             const haveAlready = all_number.find(each => each.phone_number === Number(phoneNumber))
             const selected_country = all_countries.find(each => each[1].name === country_text)
-
             if (!haveAlready) {
                 const data = {
                     country_code: selected_country[0],
