@@ -53,7 +53,9 @@ const ReceiveSmsController = {
             // console.log(numberInfo);
             let msgList = []
             if (numberInfo.provider === 'onlineSim') {
+                console.log('hi');
                 const msg = await OnlineSimUtils.getAllMessages(`+${number}`, numberInfo?.country_code)
+                // console.log('msg', msg);
                 msgList = msg
             } else {
                 const msg = await ReceiveSmsModel.find({ receiver: number }).sort({ createdAt: -1 })

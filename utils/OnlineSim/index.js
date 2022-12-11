@@ -1,4 +1,4 @@
-const axios = require("axios");
+const { default: axios } = require("axios");
 const NumberModel = require("../../Models/Number/Number.model");
 const CountryCodes = require("../CountryCodes");
 const countryList = require("../countryList");
@@ -9,12 +9,15 @@ const OnlineSimUtils = {
         const { data: { numbers } } = await axios.get(`https://onlinesim.io/api/getFreePhoneList?lang=en`)
         const all_number = await NumberModel.find()
         const all_countries = Object.entries(countryList)
-        // console.log(numbers);
+        let newNumberList = []
+        let oldNumberList = []
+
         for (let i = 0; i < numbers.length; i++) {
             const { country_text, full_number } = numbers[i];
             const phoneNumber = full_number.split('+')[1]
             const haveAlready = all_number.find(each => each.phone_number === Number(phoneNumber))
             const selected_country = all_countries.find(each => each[1].name === country_text)
+
             if (!haveAlready) {
                 const data = {
                     country_code: selected_country[0],
@@ -25,24 +28,49 @@ const OnlineSimUtils = {
                 }
                 await NumberModel.create(data)
             }
-        }
 
+            const listed = newNumberList.find(each => each === Number(phoneNumber))
+            if (!listed) {
+                newNumberList.push(Number(phoneNumber))
+            }
+        }
+        // console.log('new numbers', newNumberList);
+        all_number.filter(each => each.provider === 'onlineSim' && each.status === 'active').map(oldNum => {
+            const listed = oldNumberList.find(each => each === Number(oldNum.phone_number))
+            if (!listed) {
+                oldNumberList.push(oldNum.phone_number)
+            }
+        })
+        // console.log('old number', oldNumberList);
+        // console.log(all_number.filter(each => each.provider === 'onlineSim' && each.status === 'active').length, all_number.length);
+
+        for (let i = 0; i < oldNumberList.length; i++) {
+            const num = oldNumberList[i];
+            // console.log(newNumberList.includes(num), num);
+            if (!newNumberList.includes(num)) {
+                await NumberModel.findOneAndUpdate({ phone_number: num }, { status: 'inactive' })
+            }
+        }
         return {
             update: true
         }
     },
     //get all messages for a number
     getAllMessages: async (number, country_code) => {
+
+        // console.log(number, country_code);
+
         const calling_code = CountryCodes.find(each => each.code.toLowerCase() === country_code?.toLowerCase())
         const dial_digit = calling_code.dial_code.split('+')[1]
         const number_withOut_dialDigit = number.split(calling_code.dial_code)[1]
-        const { data: { messages } } = await axios.get(`https://onlinesim.io/api/getFreeMessageList?phone=${number_withOut_dialDigit}&country=${dial_digit}&lang=en`)
+        const response = await axios.get(`https://onlinesim.io/api/getFreeMessageList?phone=${number_withOut_dialDigit}&country=${dial_digit}&lang=en`)
 
-        const { data, last_page } = messages
+
+        const { data, last_page } = response?.data?.messages
         let msgList = [...data]
 
         if (last_page > 10) {
-            for (let i = 2; i <= 5; i++) {
+            for (let i = 2; i <= 3; i++) {
                 const newPageData = await axios.get(`https://onlinesim.io/api/getFreeMessageList?phone=${number_withOut_dialDigit}&country=${dial_digit}&lang=en&page=${i}`)
                 msgList = [...msgList, ...newPageData?.data?.messages?.data]
             }

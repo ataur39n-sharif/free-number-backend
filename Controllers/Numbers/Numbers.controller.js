@@ -19,7 +19,7 @@ const NumberController = {
                 message: 'Sync Completed. '
             })
         } catch (error) {
-            console.log('error');
+            console.log('error', error);
             return res.status(500).json({
                 success: false,
                 error: error.message

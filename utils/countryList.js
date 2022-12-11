@@ -15,10 +15,6 @@ const countryList = {
         "name": "United Kingdom",
         "slug": "united-kingdom"
     },
-    "gb": {
-        "name": "Britain",
-        "slug": "united-kingdom"
-    },
     "lv": {
         "name": "Latvia",
         "slug": "latvia"
@@ -190,7 +186,11 @@ const countryList = {
     "ci": {
         "name": "Ivory Coast",
         "slug": "ivory-coast"
-    }
+    },
+    "ie": {
+        "name": "Ireland",
+        "slug": "ireland"
+    },
 
 }
 
