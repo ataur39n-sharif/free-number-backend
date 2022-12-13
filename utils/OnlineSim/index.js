@@ -6,12 +6,26 @@ const countryList = require("../countryList");
 const OnlineSimUtils = {
     //get all free number
     syncFreeNumbers: async () => {
-        const { data: { numbers } } = await axios.get(`https://onlinesim.io/api/getFreePhoneList?lang=en`)
-        const all_number = await NumberModel.find()
-        const all_countries = Object.entries(countryList)
-        let newNumberList = []
-        let oldNumberList = []
 
+        //get free number list form onlineSim api
+        const { data: { numbers } } = await axios.get(`https://onlinesim.io/api/getFreePhoneList?lang=en`)
+        // all numberList form database 
+        const all_number = await NumberModel.find({ provider: "onlineSim" })
+        //all country list
+        const all_countries = Object.entries(countryList)
+
+        let oldNumberList = []
+        let newNumberList = []
+
+        //make a array of old numbers
+        all_number.map(oldNum => {
+            const listed = oldNumberList.find(each => each === Number(oldNum.phone_number))
+            if (!listed) {
+                oldNumberList.push(oldNum.phone_number)
+            }
+        })
+
+        //check all numbers from online sim api already listed or not in database. If not listed then add to database.
         for (let i = 0; i < numbers.length; i++) {
             const { country_text, full_number } = numbers[i];
             const phoneNumber = full_number.split('+')[1]
@@ -27,26 +41,27 @@ const OnlineSimUtils = {
                     provider: 'onlineSim',
                 }
                 await NumberModel.create(data)
-            }
 
-            const listed = newNumberList.find(each => each === Number(phoneNumber))
-            if (!listed) {
+                const listed = oldNumberList.find(each => each === Number(phoneNumber))
+                if (!listed) {
+                    oldNumberList.push(Number(phoneNumber))
+                }
+            }
+            //if this number not included in old number list add to new number list 
+            if (!oldNumberList.includes(phoneNumber)) {
                 newNumberList.push(Number(phoneNumber))
             }
         }
-        // console.log('new numbers', newNumberList);
-        all_number.filter(each => each.provider === 'onlineSim' && each.status === 'active').map(oldNum => {
-            const listed = oldNumberList.find(each => each === Number(oldNum.phone_number))
-            if (!listed) {
-                oldNumberList.push(oldNum.phone_number)
-            }
-        })
-        // console.log('old number', oldNumberList);
-        // console.log(all_number.filter(each => each.provider === 'onlineSim' && each.status === 'active').length, all_number.length);
+
+        // await NumberModel.updateMany({ provider: 'onlineSim' }, { status: 'active' })
+        console.log(oldNumberList.length, newNumberList.length);
+
+        // console.log(oldNumberList, newNumberList);
 
         for (let i = 0; i < oldNumberList.length; i++) {
             const num = oldNumberList[i];
-            // console.log(newNumberList.includes(num), num);
+            // console.log(i, newNumberList.includes(num), num);
+            // console.log(i, oldNumberList.includes(num), num);
             if (!newNumberList.includes(num)) {
                 await NumberModel.findOneAndUpdate({ phone_number: num }, { status: 'inactive' })
             }
