@@ -12,10 +12,14 @@ const dataSchema = new mongoose.Schema({
     message: {
         type: String,
         required: true
+    },
+    provider: {
+        type: String,
+        enum: ['onlineSim', 'telnyx', 'messageBird']
     }
 }, {
     timestamps: true,
-    versionKey:false,
+    versionKey: false,
 })
 
 const ReceiveSmsModel = mongoose.model('sms', dataSchema)

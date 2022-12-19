@@ -93,22 +93,31 @@ const OnlineSimUtils = {
         }
 
         const previousList = await ReceiveSmsModel.find({ receiver: number.split('+')[1] }).sort({ createdAt: -1 })
-
+        // console.log(previousList);
         let allMessages = []
 
         for (let i = 0; i < msgList.length; i++) {
             const { text, in_number, my_number, created_at, data_humans } = msgList[i];
             const modifyObj = {
-                receiver: number,
+                receiver: number.split('+')[1],
                 sender: in_number,
-                message: text,
+                message: text?.split('received from OnlineSIM.ru')?.join(''),
                 createdAt: created_at,
+                provider: 'onlineSim',
                 data_humans
             }
             allMessages.push(modifyObj)
         }
+        if (!previousList.length && allMessages.length) {
+            const result = await ReceiveSmsModel.insertMany(allMessages)
+            // console.log(result);
+        }
 
-        return allMessages
+        if (!allMessages.length) {
+            return previousList
+        } else {
+            return allMessages
+        }
     }
 }
 
