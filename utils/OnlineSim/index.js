@@ -1,5 +1,6 @@
 const { default: axios } = require("axios");
 const NumberModel = require("../../Models/Number/Number.model");
+const ReceiveSmsModel = require("../../Models/ReceiveSms/ReceiveSms.model");
 const CountryCodes = require("../CountryCodes");
 const countryList = require("../countryList");
 
@@ -30,8 +31,8 @@ const OnlineSimUtils = {
             const { country_text, full_number } = numbers[i];
             const phoneNumber = full_number.split('+')[1]
             const haveAlready = all_number.find(each => each.phone_number === Number(phoneNumber))
-            const selected_country = all_countries.find(each => each[1].name === country_text)
-
+            const selected_country = all_countries.find(each => each[1].name === (country_text === 'Britain' ? 'United Kingdom' : country_text))
+            console.log('onlineSim ==>', country_text, full_number, selected_country);
             if (!haveAlready) {
                 const data = {
                     country_code: selected_country[0],
@@ -91,7 +92,10 @@ const OnlineSimUtils = {
             }
         }
 
+        const previousList = await ReceiveSmsModel.find({ receiver: number.split('+')[1] }).sort({ createdAt: -1 })
+
         let allMessages = []
+
         for (let i = 0; i < msgList.length; i++) {
             const { text, in_number, my_number, created_at, data_humans } = msgList[i];
             const modifyObj = {
@@ -103,6 +107,7 @@ const OnlineSimUtils = {
             }
             allMessages.push(modifyObj)
         }
+
         return allMessages
     }
 }

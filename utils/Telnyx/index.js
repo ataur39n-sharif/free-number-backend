@@ -22,6 +22,7 @@ const TelnyxUtils = {
 
             const haveAlready = all_numbers.find(each => each.phone_number === Number(phoneNumber))
             const selected_country = all_countries.find(each => each[0] === countryIso2.toLowerCase())
+            console.log('telnyx ==>', phoneNumber, countryIso2, selected_country);
 
             // console.log(phoneNumber, countryIso2, haveAlready, selected_country);
             const modifyObj = {
