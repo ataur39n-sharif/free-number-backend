@@ -35,11 +35,11 @@ router
     .put('/blog/:id', BlogController.editBlog)
     .delete('/blog/:id', BlogController.deleteBlog)
     .use('/number', NumberRoute)
-    // .post('/test', (req, res) => {
-    //     console.log(req.query);
-    //     console.log(req.body);
-    //     return res.status(200).end()
-    // })
+// .post('/test', (req, res) => {
+//     console.log(req.query);
+//     console.log(req.body);
+//     return res.status(200).end()
+// })
 
 
 module.exports = router

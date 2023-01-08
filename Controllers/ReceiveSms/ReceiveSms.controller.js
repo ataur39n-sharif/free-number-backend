@@ -7,15 +7,24 @@ const ReceiveSmsController = {
         try {
             const { receiver, sender, message } = req.body
             const { provider } = req.query
+            console.log('provider', provider);
 
             if (provider === 'telnyx') {
                 const { data: { payload } } = req.body
                 const { from, to, text } = payload
-                console.log(from, to, text);
                 await ReceiveSmsModel.create({
                     receiver: to[0].phone_number.split('+')[1],
                     sender: from.phone_number.split('+')[1],
                     message: text
+                })
+            } else if (provider === 'vonage') {
+                const { msisdn, to, text } = req.body
+                console.log(req.body);
+                await ReceiveSmsModel.create({
+                    receiver: to,
+                    sender: msisdn,
+                    message: text,
+                    provider: 'vonage'
                 })
             } else {
                 await ReceiveSmsModel.create({ receiver, sender, message })
