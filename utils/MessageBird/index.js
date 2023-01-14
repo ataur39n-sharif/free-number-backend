@@ -4,13 +4,13 @@ const countryList = require("../countryList");
 
 const MessageBirdUtils = {
     //sync numbers
-    syncNumbers: async () => {
+    syncNumbers: async (allNumber) => {
         const list = await axios.get('https://numbers.messagebird.com/v1/phone-numbers?limit=100', {
             headers: {
                 'Authorization': 'AccessKey 5TfrdszTj84jQGS2PtV84BIJy'
             }
         })
-        const allNumber = await NumberModel.find()
+        // const allNumber = await NumberModel.find()
         const countryInfoList = Object.entries(countryList)
         const messageBirdNumberList = allNumber.filter((doc) => (doc.provider === "messageBird") && (doc.status === 'active'))
         //update inactive number list

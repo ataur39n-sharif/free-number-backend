@@ -6,12 +6,12 @@ const countryList = require("../countryList");
 
 const OnlineSimUtils = {
     //get all free number
-    syncFreeNumbers: async () => {
+    syncFreeNumbers: async (all_numbers) => {
 
         //get free number list form onlineSim api
         const { data: { numbers } } = await axios.get(`https://onlinesim.io/api/getFreePhoneList?lang=en`)
         // all numberList form database 
-        const all_number = await NumberModel.find({ provider: "onlineSim" })
+        const all_number = all_numbers.filter(each => each.provider === "onlineSim")
         //all country list
         const all_countries = Object.entries(countryList)
 
@@ -32,7 +32,7 @@ const OnlineSimUtils = {
             const phoneNumber = full_number.split('+')[1]
             const haveAlready = all_number.find(each => each.phone_number === Number(phoneNumber))
             const selected_country = all_countries.find(each => each[1].name === (country_text === 'Britain' ? 'United Kingdom' : country_text))
-            console.log('onlineSim ==>', country_text, full_number, selected_country);
+            // console.log('onlineSim ==>', country_text, full_number, selected_country);
             if (!haveAlready) {
                 const data = {
                     country_code: selected_country[0],
@@ -55,7 +55,7 @@ const OnlineSimUtils = {
         }
 
         // await NumberModel.updateMany({ provider: 'onlineSim' }, { status: 'active' })
-        console.log(oldNumberList.length, newNumberList.length);
+        // console.log(oldNumberList.length, newNumberList.length);
 
         // console.log(oldNumberList, newNumberList);
 

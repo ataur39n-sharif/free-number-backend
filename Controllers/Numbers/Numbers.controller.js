@@ -5,14 +5,18 @@ const countryList = require("../../utils/countryList")
 const MessageBirdUtils = require("../../utils/MessageBird")
 const OnlineSimUtils = require("../../utils/OnlineSim")
 const TelnyxUtils = require("../../utils/Telnyx")
+const VonageUtils = require("../../utils/Vonage")
 
 const NumberController = {
     //add number
     syncNumberList: async (req, res) => {
         try {
-            await MessageBirdUtils.syncNumbers()
-            await OnlineSimUtils.syncFreeNumbers()
-            await TelnyxUtils.syncNumbers()
+            const allNumber = await NumberModel.find()
+
+            await MessageBirdUtils.syncNumbers(allNumber)
+            await OnlineSimUtils.syncFreeNumbers(allNumber)
+            await TelnyxUtils.syncNumbers(allNumber)
+            await VonageUtils.syncNumbers(allNumber)
 
             return res.status(200).json({
                 success: true,
