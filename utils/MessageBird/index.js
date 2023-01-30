@@ -7,7 +7,7 @@ const MessageBirdUtils = {
     syncNumbers: async (allNumber) => {
         const list = await axios.get('https://numbers.messagebird.com/v1/phone-numbers?limit=100', {
             headers: {
-                'Authorization': 'AccessKey 5TfrdszTj84jQGS2PtV84BIJy'
+                'Authorization': 'AccessKey vWjnLiHsvCMqaJCJiSr4es8l8'
             }
         })
         // const allNumber = await NumberModel.find()

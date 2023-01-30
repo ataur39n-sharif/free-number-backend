@@ -9,7 +9,7 @@ const TelnyxUtils = {
     syncNumbers: async (all_numbers) => {
         const { data } = await axios.get(`https://api.telnyx.com/v2/phone_numbers`, {
             headers: {
-                'Authorization': 'Bearer KEY018338BD2B10B23AADC63CEE126A3AD7_xsA0DbcnSjcInYhdpm0X3p'
+                'Authorization': 'Bearer KEY01860374612C8BC72BF27E5ACFA0A223_zvLRfvAHPtZIckCWUtsj58'
             }
         })
         // const all_numbers = await NumberModel.find()

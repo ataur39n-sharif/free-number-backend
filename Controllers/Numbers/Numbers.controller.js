@@ -16,7 +16,7 @@ const NumberController = {
             await MessageBirdUtils.syncNumbers(allNumber)
             await OnlineSimUtils.syncFreeNumbers(allNumber)
             await TelnyxUtils.syncNumbers(allNumber)
-            await VonageUtils.syncNumbers(allNumber)
+            // await VonageUtils.syncNumbers(allNumber)
 
             return res.status(200).json({
                 success: true,

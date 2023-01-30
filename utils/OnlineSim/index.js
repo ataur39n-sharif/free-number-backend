@@ -31,7 +31,15 @@ const OnlineSimUtils = {
             const { country_text, full_number } = numbers[i];
             const phoneNumber = full_number.split('+')[1]
             const haveAlready = all_number.find(each => each.phone_number === Number(phoneNumber))
-            const selected_country = all_countries.find(each => each[1].name === (country_text === 'Britain' ? 'United Kingdom' : country_text))
+            let c_country_text = country_text
+
+            if (country_text === 'Czech') {
+                c_country_text = 'Czech Republic'
+            } else if (country_text === 'Britain') {
+                c_country_text = 'United Kingdom'
+            }
+
+            const selected_country = all_countries.find(each => each[1].name === c_country_text)
             // console.log('onlineSim ==>', country_text, full_number, selected_country);
             if (!haveAlready) {
                 const data = {
