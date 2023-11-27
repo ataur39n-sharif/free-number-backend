@@ -25,5 +25,5 @@ COPY . .
 
 WORKDIR /app
 
-EXPOSE 8080
-CMD ["node" ,"index.js"]
+EXPOSE 9000
+CMD ["npm" ,"dev"]
