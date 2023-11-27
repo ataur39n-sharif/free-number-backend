@@ -26,4 +26,4 @@ COPY . .
 WORKDIR /app
 
 EXPOSE 9000
-CMD ["npm" ,"dev"]
+CMD ["npm","run" ,"dev"]
